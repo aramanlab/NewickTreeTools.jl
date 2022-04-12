@@ -91,7 +91,7 @@ end
 
 plotting for trees in julia is not great at the moment.
 
-For small trees `NewickTrees.jl` has a plot recipe
+For small trees [`NewickTrees.jl`](https://github.com/arzwa/NewickTree.jl) has a plot recipe
 
 ```julia
 using NewickTrees # not needed if already set `using NewickTreeTools` as NewickTrees is reexported from this package
@@ -100,7 +100,7 @@ tree = readnw(read("filename.nw", String))
 plot(tree)
 ```
 
-For larger trees if you want to stick with julia try using `Phylo.jl` 
+For larger trees if you want to stick with julia try using [`Phylo.jl`](https://docs.ecojulia.org/Phylo.jl/stable/)
 Phylo and NewickTrees do not play well together and have some conflicting functions, 
 so it is best to do this in a new file or notebook
 
@@ -112,11 +112,22 @@ sort!(tree)
 plot(tree)
 ```
 
-The most featureful library for plotting trees is R's `ggtree` library. 
-Which can read in newick format trees with the `ape` and `treeio` libraries.
+The most featureful library for plotting trees is R's [`ggtree`](https://bioconductor.org/packages/release/bioc/html/ggtree.html) library. 
+Which can read in newick format trees with the [`ape`](https://www.rdocumentation.org/packages/ape/versions/5.6-2) and [`treeio`](https://bioconductor.org/packages/release/bioc/html/treeio.html) libraries.
+
+useful links:
+
+https://guangchuangyu.github.io/ggtree-book/chapter-ggtree.html
 
 ```R
-treefile <- "data/BB/SPI/2022-03-24_BBtree_Uhat-BBonly.newick"
+supressMessages({
+    # library(tidyverse)
+    library(ape)
+    library(treeio)
+    library(ggplot2)
+    library(ggtree)
+})
+treefile <- "tree.newick"
 tree <- read.tree(treefile)
 p <- ggtree(tree,
     size = 2,
