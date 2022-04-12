@@ -30,9 +30,9 @@ export tally_tree_bifurcations,
     stringhamming
 include("consensustree.jl")
 
-export cuttree, measure_splits, 
-    local_splits, as_polytomy!, 
-    collectiveLCA
+export cuttree, mapinternalnodes, 
+    maplocalnodes, collectiveLCA,
+    as_polytomy!
 include("treefunctions.jl")
 
 export levelorder, getleafnames
