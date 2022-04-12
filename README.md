@@ -91,10 +91,10 @@ end
 
 plotting for trees in julia is not great at the moment.
 
-For small trees [`NewickTrees.jl`](https://github.com/arzwa/NewickTree.jl) has a plot recipe
+For small trees [`NewickTree.jl`](https://github.com/arzwa/NewickTree.jl) has a plot recipe
 
 ```julia
-using NewickTrees # not needed if already set `using NewickTreeTools` as NewickTrees is reexported from this package
+using NewickTree # not needed if already set `using NewickTreeTools` as NewickTrees is reexported from this package
 using StatsPlots
 tree = readnw(read("filename.nw", String))
 plot(tree)
