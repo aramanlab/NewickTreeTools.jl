@@ -12,7 +12,7 @@ the same counter in multiple calls will keep a tally across multiple trees
 function tally_tree_bifurcations(tree::Node, cntr=counter(String))
     leafnames = getleafnames(tree)
     nleaves = length(leafnames)
-    for node in PreOrderDFS(tree)
+    for node in prewalk(tree)
         # only internal nodes
         (isleaf(node) || isroot(node)) && continue
         # get leaves

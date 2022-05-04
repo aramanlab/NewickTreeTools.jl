@@ -46,7 +46,7 @@ args and kwargs are passed to `fun()`
 """
 function mapinternalnodes(fun::Function, tree::Node, args...; kwargs...)
     results = Vector()
-    for (i,node) in enumerate(PreOrderDFS(tree))
+    for (i,node) in enumerate(prewalk(tree))
         # only internal nodes
         isleaf(node) && continue
         # run function
@@ -65,7 +65,7 @@ args and kwargs are passed to `fun()`
 """
 function maplocalnodes(fun::Function, tree::Node, args...; kwargs...)
     results = Vector()
-    for (i,node) in enumerate(PreOrderDFS(tree))
+    for (i,node) in enumerate(prewalk(tree))
         # only internal nodes
         isleaf(node) && continue
         # only nodes that have a leaf as child
@@ -97,7 +97,7 @@ by default removes zero length branches
 (i.e. nodes where distance between child and parent == 0)
 """
 function as_polytomy!(tree::Node; fun::Function=n->distance(n)≈0)
-    for n in filter(fun, PreOrderDFS(tree))
+    for n in filter(fun, prewalk(tree))
         !isroot(n) && !isleaf(n) && delete!(n)
     end
 end

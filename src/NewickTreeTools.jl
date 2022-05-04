@@ -3,7 +3,7 @@ module NewickTreeTools
 using Reexport
 using AbstractTrees
 using NewickTree
-using NewickTree: PreOrderDFS, height, getpath
+using NewickTree: prewalk, height, getpath
 using NewickTree: setdistance!, setsupport!, support, getpath
 
 using Statistics
