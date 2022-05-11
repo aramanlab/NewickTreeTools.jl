@@ -9,12 +9,13 @@ as a string: `1110000` where 1 = belonging to smaller group & 0 = belonging to t
 values are the number of times this split is observed. cntr is modified in place so using
 the same counter in multiple calls will keep a tally across multiple trees
 """
-function tally_tree_bifurcations(tree::Node, cntr=counter(String))
-    leafnames = getleafnames(tree)
+function tally_tree_bifurcations(tree::Node, cntr=counter(String); countroot=true)
+    leafnames = sort(getleafnames(tree))
     nleaves = length(leafnames)
     for node in prewalk(tree)
         # only internal nodes
-        (isleaf(node) || isroot(node)) && continue
+        isleaf(node) && continue
+        !countroot && isroot(node) && continue
         # get leaves
         key = zeros(Bool, nleaves)
         subsetleaves = indexin(getleafnames(node), leafnames)
