@@ -8,15 +8,15 @@ levelorder(v::CategoricalArray) = Int.(v.refs)
 
 
 """
-    getleafnames(t::Node)
+    getleafnames(t::NewickTree.Node)
 
 Get names of all the leafs with `t` as ancester
 """
-getleafnames(t::Node) = name.(getleaves(t))
+getleafnames(t::NewickTree.Node) = name.(getleaves(t))
 
 
 
-function Base.delete!(n::Node)
+function Base.delete!(n::NewickTree.Node)
     p = parent(n)
     cs = children(n)
     for c in cs; push!(p, c); end

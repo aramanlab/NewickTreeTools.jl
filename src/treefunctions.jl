@@ -1,7 +1,7 @@
 
 
 """
-    cuttree(distfun::Function, tree::Node, θ) 
+    cuttree(distfun::Function, tree::NewickTree.Node, θ) 
 
 returns all vector of Nodes where distance to root is
 greater than theta `d > θ`.
@@ -9,7 +9,7 @@ greater than theta `d > θ`.
 distance function must take to NewickTree.Node objects and 
 compute a scaler distance between them.
 """
-function cuttree(distfun::Function, tree::Node, θ) 
+function cuttree(distfun::Function, tree::NewickTree.Node, θ) 
     θ ≤ distfun(tree, tree) && return [tree]
     ns = typeof(tree)[]
     # define tree traversal
@@ -38,13 +38,13 @@ function cuttree(distfun::Function, tree::Node, θ)
 end
 
 """
-    mapinternalnodes(fun::Function, tree::Node, args...; kwargs...)
+    mapinternalnodes(fun::Function, tree::NewickTree.Node, args...; kwargs...)
 
 maps function `fun()` across internal nodes of tree.
 
 args and kwargs are passed to `fun()`
 """
-function mapinternalnodes(fun::Function, tree::Node, args...; kwargs...)
+function mapinternalnodes(fun::Function, tree::NewickTree.Node, args...; kwargs...)
     results = Vector()
     for (i,node) in enumerate(prewalk(tree))
         # only internal nodes
@@ -56,14 +56,14 @@ function mapinternalnodes(fun::Function, tree::Node, args...; kwargs...)
 end
 
 """
-    maplocalnodes(fun::Function, tree::Node, args...; kwargs...)
+    maplocalnodes(fun::Function, tree::NewickTree.Node, args...; kwargs...)
 
 maps function `fun()` across internal nodes of tree conditioned on having
     one direct child that is a leaf.
 
 args and kwargs are passed to `fun()`
 """
-function maplocalnodes(fun::Function, tree::Node, args...; kwargs...)
+function maplocalnodes(fun::Function, tree::NewickTree.Node, args...; kwargs...)
     results = Vector()
     for (i,node) in enumerate(prewalk(tree))
         # only internal nodes
@@ -78,35 +78,45 @@ end
 
 
 """
-    collectiveLCA(tree, nodes)
+    collectiveLCA(nodes)
 
 finds last common ancester of a collection of Nodes
 """
-function collectiveLCA(tree::Node, nodes::Vector{Node})
-    lca = map(b->getlca(tree, string(nodes[1]), string(b)), nodes[2:end])
+function collectiveLCA(nodes::AbstractArray{<:NewickTree.Node})
+    lca = map(b->NewickTree.getlca(nodes[1], b), nodes[2:end])
     idx = argmin(NewickTree.height.(lca))
     lca[idx]
 end
 
 """
-    as_polytomy!(tree::Node; fun::Function=n->distance(n)≈0)
+    as_polytomy(fun::Function, tree::NewickTree.Node)
+    as_polytomy!(fun::Function, tree::NewickTree.Node)
 
-removes internal nodes from tree based on `fun()` which must return a Bool
+removes internal nodes from tree based on `fun()` 
+which must return a true if node is to be removed
 
 by default removes zero length branches 
 (i.e. nodes where distance between child and parent == 0)
 """
-function as_polytomy!(tree::Node; fun::Function=n->distance(n)≈0)
+function as_polytomy(fun::Function, tree::NewickTree.Node)
+    tree_new = deepcopy(tree)
+    as_polytomy!(fun, tree_new)
+    tree_new
+end
+
+function as_polytomy!(fun::Function, tree::NewickTree.Node)
     for n in filter(fun, prewalk(tree))
         !isroot(n) && !isleaf(n) && delete!(n)
     end
 end
 
+
+
 # """
 #     insertduplicatesamples!(tree, mapping, degencol; idcol=:ids)
 # requires loading DataFrames...
 # """
-# function insertduplicatesamples!(tree::Node, mapping::DataFrame, degencol; idcol=:ids)
+# function insertduplicatesamples!(tree::NewickTree.Node, mapping::DataFrame, degencol; idcol=:ids)
 #     nv = [NewickTree.nv(tree)]
 #     leaves = getleaves(tree)
 #     leafnames = getleafnames(tree)

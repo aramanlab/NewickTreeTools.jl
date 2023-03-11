@@ -3,6 +3,7 @@ module NewickTreeTools
 using Reexport
 using AbstractTrees
 using NewickTree
+using NewickTree: Node
 using NewickTree: prewalk, height, getpath
 using NewickTree: setdistance!, setsupport!, support, getpath
 
@@ -32,7 +33,7 @@ include("consensustree.jl")
 
 export cuttree, mapinternalnodes, 
     maplocalnodes, collectiveLCA,
-    as_polytomy!
+    as_polytomy, as_polytomy!
 include("treefunctions.jl")
 
 export levelorder, getleafnames
