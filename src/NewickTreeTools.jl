@@ -1,7 +1,7 @@
 module NewickTreeTools
 
 using Reexport
-using AbstractTrees
+# using AbstractTrees
 using NewickTree
 using NewickTree: Node
 using NewickTree: prewalk, height, getpath
